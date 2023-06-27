@@ -13,6 +13,7 @@ void escrever_matriz(int num, int l, int c, int tabuleiro[][9]);
 void gerar_dicas(int tabuleiro[][9]);
 void update(int num, int l, int c, int tabuleiro[][9]);
 int verifica_vitoria(int tabuleiro[][9], int err);
+void limpar();
 
 int main()
 {
@@ -23,7 +24,7 @@ int main()
 
     zerar_matriz(tabuleiro);
     gerar_dicas(tabuleiro);
-    system("clear");
+    limpar();
     exibir_matriz(tabuleiro);
 
     while (1)
@@ -247,7 +248,7 @@ void gerar_dicas(int tabuleiro[][9])
 void update(int num, int l, int c, int tabuleiro[][9])
 {
     escrever_matriz(num, l, c, tabuleiro);
-    system("clear");
+    limpar();
     exibir_matriz(tabuleiro);
 }
 
@@ -270,4 +271,12 @@ int verifica_vitoria(int tabuleiro[][9], int err)
     }
 
     return 0;
+}
+
+void limpar(){
+    #if defined(_WIN32) || defined(_WIN64)
+        system("cls");
+    #else
+        system("clear");
+    #endif
 }
