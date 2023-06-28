@@ -93,6 +93,7 @@ int main()
 
 void exibir_matriz(int tabuleiro[][9])
 {
+    int cor;
     printf("\033[32m-------------------------------------\n");
     for (size_t i = 0; i < 9; i++)
     {
@@ -102,11 +103,25 @@ void exibir_matriz(int tabuleiro[][9])
 
             if (tabuleiro[i][j] == 0)
             {
-                printf(" %d ", tabuleiro[i][j] > 10);
+                printf(" %d ", tabuleiro[i][j]);
             }
             else
             {
-                printf("\033[%d;01m %d \033[0m", (!teste_geral(tabuleiro[i][j], i, j, tabuleiro)) ? 33 : 31, (tabuleiro[i][j] > 10) ? tabuleiro[i][j] - 10 : tabuleiro[i][j]);
+                if (tabuleiro[i][j] > 10)
+                {
+                    cor = 35;
+                }
+                else if (!teste_geral(tabuleiro[i][j], i, j, tabuleiro))
+                {
+
+                    cor = 33;
+                }
+                else
+                {
+                    cor = 31;
+                }
+
+                printf("\033[%d;%d;01m %d \033[0m", cor, (!teste_geral(tabuleiro[i][j], i, j, tabuleiro)) ? 40 : 41, (tabuleiro[i][j] > 10) ? tabuleiro[i][j] - 10 : tabuleiro[i][j]);
             }
         }
         printf("|%s", (i == 2 || i == 5) ? "\n\033[34m-------------------------------------\033[0m\n" : "\n─────────────────────────────────────\n");
@@ -126,13 +141,15 @@ void zerar_matriz(int tabuleiro[][9])
 
 int teste_linha(int num, int l, int c, int tabuleiro[][9])
 {
+    // printf("c: %d       l: %d         num: %d\n", c, l, num);
     for (size_t i = 0; i < 9; i++)
     {
-        if (tabuleiro[l][i] == num && i != c)
+        if ((tabuleiro[l][i] == num || ((tabuleiro[l][i] > 10) ? tabuleiro[l][i] - 10 : tabuleiro[l][i]) == ((num > 10) ? num - 10 : num)) && i != c)
         {
             return 1;
         }
     }
+
     return 0;
 }
 
@@ -140,7 +157,7 @@ int teste_coluna(int num, int l, int c, int tabuleiro[][9])
 {
     for (size_t i = 0; i < 9; i++)
     {
-        if (tabuleiro[i][c] == num && i != l)
+        if ((tabuleiro[i][c] == num || ((tabuleiro[i][c] > 10) ? tabuleiro[i][c] - 10 : tabuleiro[i][c]) == ((num > 10) ? num - 10 : num)) && i != l)
         {
             return 1;
         }
@@ -186,7 +203,7 @@ int teste_area(int num, int l, int c, int tabuleiro[][9])
     {
         for (size_t j = 0; j < 3; j++)
         {
-            if (tabuleiro[i + aux_l][j + aux_c] == num && (i + aux_l != l || j + aux_c != c))
+            if (((tabuleiro[i + aux_l][j + aux_c] > 10 ? tabuleiro[i + aux_l][j + aux_c] - 10 : tabuleiro[i + aux_l][j + aux_c]) == ((num > 10) ? num - 10 : num)) && (i + aux_l != l || j + aux_c != c))
             {
                 return 1;
             }
@@ -273,10 +290,11 @@ int verifica_vitoria(int tabuleiro[][9], int err)
     return 0;
 }
 
-void limpar(){
-    #if defined(_WIN32) || defined(_WIN64)
-        system("cls");
-    #else
-        system("clear");
-    #endif
+void limpar()
+{
+#if defined(_WIN32) || defined(_WIN64)
+    system("cls");
+#else
+    system("clear");
+#endif
 }
